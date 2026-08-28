@@ -11,9 +11,6 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>();
 
-#if DEBUG
-        builder.Logging.AddDebug();
-#endif
 
         builder.Services.AddSingleton<HttpClient>();
         builder.Services.AddSingleton<Services.UserService>();
