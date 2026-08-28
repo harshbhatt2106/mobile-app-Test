@@ -19,12 +19,10 @@
 
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="{StaticResource TextPrimary}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
             </Style>
 
             <Style TargetType="Button">
                 <Setter Property="CornerRadius" Value="14" />
-                <Setter Property="FontFamily" Value="OpenSansSemibold" />
                 <Setter Property="HeightRequest" Value="50" />
             </Style>
         </ResourceDictionary>
