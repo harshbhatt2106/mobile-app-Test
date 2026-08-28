@@ -17,7 +17,6 @@ public partial class MainPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-
         if (!_loaded)
         {
             _loaded = true;
@@ -30,7 +29,6 @@ public partial class MainPage : ContentPage
         try
         {
             RefreshView.IsRefreshing = true;
-
             var users = await _userService.GetUsersAsync();
             UsersCollection.ItemsSource = users;
             CountLabel.Text = $"{users.Count} {(users.Count == 1 ? "profile" : "profiles")}";
@@ -38,10 +36,7 @@ public partial class MainPage : ContentPage
         catch (Exception ex)
         {
             CountLabel.Text = "Unable to load profiles";
-            await DisplayAlert(
-                "Unable to load profiles",
-                $"Please make sure the API is running and the phone is connected to the same network.\n\n{ex.Message}",
-                "OK");
+            await DisplayAlert("Unable to load profiles", ex.Message, "OK");
         }
         finally
         {
@@ -49,13 +44,40 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private async void OnRefresh(object? sender, EventArgs e)
+    private async void OnAddClicked(object? sender, EventArgs e)
     {
-        await LoadUsersAsync();
+        var name = await DisplayPromptAsync("Add Member", "Enter member name:", "Next", "Cancel", "Name");
+        if (string.IsNullOrWhiteSpace(name)) return;
+
+        var email = await DisplayPromptAsync("Add Member", "Enter email:", "Next", "Cancel", "Email");
+        if (string.IsNullOrWhiteSpace(email)) return;
+
+        var ageText = await DisplayPromptAsync("Add Member", "Enter age:", "Save", "Cancel", "Age", keyboard: Keyboard.Numeric);
+        if (!int.TryParse(ageText, out var age) || age < 0)
+        {
+            await DisplayAlert("Invalid age", "Please enter a valid age.", "OK");
+            return;
+        }
+
+        try
+        {
+            var user = await _userService.CreateUserAsync(new User
+            {
+                Name = name.Trim(),
+                Email = email.Trim(),
+                Age = age
+            });
+
+            await DisplayAlert("Success", user is null ? "Member added." : $"{user.Name} was added successfully.", "OK");
+            await LoadUsersAsync();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Unable to add member", ex.Message, "OK");
+        }
     }
 
-    private async void OnRefreshClicked(object? sender, EventArgs e)
-    {
-        await LoadUsersAsync();
-    }
+    private async void OnRefresh(object? sender, EventArgs e) => await LoadUsersAsync();
+
+    private async void OnRefreshClicked(object? sender, EventArgs e) => await LoadUsersAsync();
 }
