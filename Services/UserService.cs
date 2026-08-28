@@ -19,4 +19,11 @@ public sealed class UserService
         var users = await _httpClient.GetFromJsonAsync<List<User>>(UsersEndpoint, cancellationToken);
         return users ?? [];
     }
+
+    public async Task<User?> CreateUserAsync(User user, CancellationToken cancellationToken = default)
+    {
+        using var response = await _httpClient.PostAsJsonAsync(UsersEndpoint, user, cancellationToken);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadFromJsonAsync<User>(cancellationToken: cancellationToken);
+    }
 }
