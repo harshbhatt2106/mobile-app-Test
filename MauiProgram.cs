@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Hosting;
+using MobileAppTest.Services;
 
 namespace MobileAppTest;
 
@@ -13,10 +13,8 @@ public static class MauiProgram
         builder
             .UseMauiApp<App>();
 
-
         builder.Services.AddSingleton<HttpClient>();
-        builder.Services.AddSingleton<Services.UserService>();
-        builder.Services.AddSingleton<AppShell>();
+        builder.Services.AddSingleton<UserService>();
         builder.Services.AddSingleton<MainPage>();
 
         return builder.Build();
