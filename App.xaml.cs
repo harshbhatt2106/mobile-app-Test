@@ -2,9 +2,16 @@ namespace MobileAppTest;
 
 public partial class App : Application
 {
-    public App(AppShell appShell)
+    private readonly MainPage _mainPage;
+
+    public App(MainPage mainPage)
     {
         InitializeComponent();
-        MainPage = appShell;
+        _mainPage = mainPage;
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(_mainPage);
     }
 }
