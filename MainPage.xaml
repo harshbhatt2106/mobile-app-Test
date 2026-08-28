@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileAppTest.MainPage"
+             Title="ShadiConnect">
+
+    <Grid RowDefinitions="Auto,*" Padding="0">
+        <!-- Header -->
+        <Border Grid.Row="0"
+                BackgroundColor="{StaticResource Primary}"
+                StrokeThickness="0"
+                Padding="22,20,22,24">
+            <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
+                    <Label Text="ShadiConnect"
+                           TextColor="White"
+                           FontSize="28"
+                           FontFamily="OpenSansSemibold" />
+                    <Label Text="Find meaningful connections"
+                           TextColor="#F4DCE8"
+                           FontSize="14" />
+                </VerticalStackLayout>
+                <Border Grid.Row="0" Grid.Column="1"
+                        BackgroundColor="#A95780"
+                        StrokeThickness="0"
+                        StrokeShape="RoundRectangle 18"
+                        WidthRequest="48"
+                        HeightRequest="48">
+                    <Label Text="♡"
+                           TextColor="White"
+                           FontSize="30"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center" />
+                </Border>
+
+                <VerticalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Margin="0,22,0,0" Spacing="3">
+                    <Label Text="Members"
+                           TextColor="#F4DCE8"
+                           FontSize="13" />
+                    <Label x:Name="CountLabel"
+                           Text="0 profiles"
+                           TextColor="White"
+                           FontSize="20"
+                           FontFamily="OpenSansSemibold" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <!-- Content -->
+        <RefreshView Grid.Row="1" x:Name="RefreshView" Refreshing="OnRefresh">
+            <ScrollView>
+                <VerticalStackLayout Padding="18,18,18,30" Spacing="18">
+
+                    <Border BackgroundColor="{StaticResource CardBackground}"
+                            Stroke="#EDE4E8"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 20"
+                            Padding="18">
+                        <VerticalStackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Spacing="2">
+                                    <Label x:Name="FormTitle"
+                                           Text="Add a profile"
+                                           FontSize="20"
+                                           FontFamily="OpenSansSemibold" />
+                                    <Label Text="Create a simple member profile"
+                                           TextColor="{StaticResource TextSecondary}"
+                                           FontSize="12" />
+                                </VerticalStackLayout>
+                                <Button x:Name="CancelButton"
+                                        Grid.Column="1"
+                                        Text="Cancel"
+                                        IsVisible="False"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource Primary}"
+                                        HeightRequest="38"
+                                        Padding="10,0"
+                                        Clicked="OnCancelClicked" />
+                            </Grid>
+
+                            <Entry x:Name="NameEntry"
+                                   Placeholder="Full name"
+                                   ClearButtonVisibility="WhileEditing"
+                                   BackgroundColor="#FAF7F9"
+                                   HeightRequest="50" />
+
+                            <Entry x:Name="EmailEntry"
+                                   Placeholder="Email address"
+                                   Keyboard="Email"
+                                   ClearButtonVisibility="WhileEditing"
+                                   BackgroundColor="#FAF7F9"
+                                   HeightRequest="50" />
+
+                            <Entry x:Name="AgeEntry"
+                                   Placeholder="Age"
+                                   Keyboard="Numeric"
+                                   ClearButtonVisibility="WhileEditing"
+                                   BackgroundColor="#FAF7F9"
+                                   HeightRequest="50" />
+
+                            <Button x:Name="SaveButton"
+                                    Text="Add Profile"
+                                    BackgroundColor="{StaticResource Primary}"
+                                    TextColor="White"
+                                    Clicked="OnSaveClicked" />
+                        </VerticalStackLayout>
+                    </Border>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Recent profiles"
+                               FontSize="20"
+                               FontFamily="OpenSansSemibold"
+                               VerticalOptions="Center" />
+                        <Button Grid.Column="1"
+                                Text="↻ Refresh"
+                                BackgroundColor="Transparent"
+                                TextColor="{StaticResource Primary}"
+                                HeightRequest="40"
+                                Padding="8,0"
+                                Clicked="OnRefreshClicked" />
+                    </Grid>
+
+                    <CollectionView x:Name="UsersCollection"
+                                    SelectionMode="None">
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout Padding="30" Spacing="8" HorizontalOptions="Center">
+                                <Label Text="No profiles yet"
+                                       FontSize="18"
+                                       FontFamily="OpenSansSemibold"
+                                       HorizontalTextAlignment="Center" />
+                                <Label Text="Add your first profile above."
+                                       TextColor="{StaticResource TextSecondary}"
+                                       HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border BackgroundColor="White"
+                                        Stroke="#EDE4E8"
+                                        StrokeThickness="1"
+                                        StrokeShape="RoundRectangle 18"
+                                        Padding="15"
+                                        Margin="0,0,0,12">
+                                    <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="12">
+                                        <Border Grid.Column="0"
+                                                BackgroundColor="#F2E3EB"
+                                                StrokeThickness="0"
+                                                StrokeShape="RoundRectangle 24"
+                                                WidthRequest="48"
+                                                HeightRequest="48">
+                                            <Label Text="{Binding Name, StringFormat='{}{0}'}"
+                                                   TextColor="{StaticResource Primary}"
+                                                   FontSize="18"
+                                                   FontFamily="OpenSansSemibold"
+                                                   HorizontalTextAlignment="Center"
+                                                   VerticalTextAlignment="Center" />
+                                        </Border>
+
+                                        <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                                            <Label Text="{Binding Name}"
+                                                   FontSize="16"
+                                                   FontFamily="OpenSansSemibold" />
+                                            <Label Text="{Binding Email}"
+                                                   TextColor="{StaticResource TextSecondary}"
+                                                   FontSize="12" />
+                                            <Label Text="{Binding Age, StringFormat='Age {0}'}"
+                                                   TextColor="{StaticResource Primary}"
+                                                   FontSize="12" />
+                                        </VerticalStackLayout>
+
+                                        <VerticalStackLayout Grid.Column="2" Spacing="2" VerticalOptions="Center">
+                                            <Button Text="Edit"
+                                                    BackgroundColor="#F7EEF3"
+                                                    TextColor="{StaticResource Primary}"
+                                                    HeightRequest="34"
+                                                    Padding="12,0"
+                                                    Clicked="OnEditClicked"
+                                                    CommandParameter="{Binding .}" />
+                                            <Button Text="Delete"
+                                                    BackgroundColor="Transparent"
+                                                    TextColor="{StaticResource Danger}"
+                                                    HeightRequest="34"
+                                                    Padding="12,0"
+                                                    Clicked="OnDeleteClicked"
+                                                    CommandParameter="{Binding .}" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </ScrollView>
+        </RefreshView>
+    </Grid>
+</ContentPage>
